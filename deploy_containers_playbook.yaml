@@ -49,6 +49,12 @@
           restart_policy: always
       become: true
 
+    - name: Ensure the directory /example/directory exists
+      ansible.builtin.file:
+        path: /tmp/permissions
+        state: directory
+        mode: '0755'
+
     - name: Creating a file with content
       copy:
         dest: "/tmp/properties/security.properties"
