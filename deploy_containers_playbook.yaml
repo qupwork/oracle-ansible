@@ -8,10 +8,11 @@
     - autonomous_admin_password: "123456789"
     - weblogic_username: "hello"
     - weblogic_password: "123456789"
-    - security_properties: |-
+    - security_properties: >-
         username={{ weblogic_username }}
         password={{ weblogic_password }}
         JAVA_OPTIONS=-Dweblogic.StdoutDebugEnabled=true
+
   tasks:
     - name: Create a oadb volume
       containers.podman.podman_volume:
