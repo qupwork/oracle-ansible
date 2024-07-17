@@ -9,9 +9,9 @@
     - weblogic_username: "hello"
     - weblogic_password: "123456789"
     - security_properties: >-
-        username={{ weblogic_username }}\n
-        password={{ weblogic_password }}\n
-        JAVA_OPTIONS=-Dweblogic.StdoutDebugEnabled=true\n
+        username={{ weblogic_username }}
+        password={{ weblogic_password }}
+        JAVA_OPTIONS=-Dweblogic.StdoutDebugEnabled=true
   tasks:
     - name: Create a oadb volume
       containers.podman.podman_volume:
@@ -51,13 +51,7 @@
     - name: Creating a file with content
       copy:
         dest: "/tmp/security.properties"
-        content: ""
-
-    - name: Creating a file with content
-      ansible.builtin.blockinfile:
-        path: /tmp/security.properties
-        block: |
-          {{ security_properties }}
+        content: "{{ security_properties }}"
 
     - name: "Create the admin weblogic server container"
       containers.podman.podman_container:
