@@ -68,7 +68,7 @@
         publish:
         - 7001:7001
         volume:
-          - "/tmp/properties:/u01/oracle/properties"
+          - "/tmp/properties:/u01/oracle/properties:Z"
         state: started
         recreate: true
         generate_systemd:
@@ -84,7 +84,7 @@
         publish:
         - 8001:8001
         volume:
-          - "/tmp/properties:/u01/oracle/properties"
+          - "/tmp/properties:/u01/oracle/properties:Z"
         cmd_args:
           - "startManagedServer.sh"
         env:
