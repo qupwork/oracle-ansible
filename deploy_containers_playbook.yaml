@@ -12,7 +12,6 @@
         username={{ weblogic_username }}
         password={{ weblogic_password }}
         JAVA_OPTIONS=-Dweblogic.StdoutDebugEnabled=true
-
   tasks:
     - name: Create a oadb volume
       containers.podman.podman_volume:
@@ -49,13 +48,11 @@
           restart_policy: on-failure
       become: true
 
-    - hosts: all
-      tasks:
-        - name: Creating a file with content
-          copy:
-            dest: "/tmp/security.properties"
-            content: |
-              {{ security_properties }}
+    - name: Creating a file with content
+      copy:
+        dest: "/tmp/security.properties"
+        content: |
+          {{ security_properties }}
 
     - name: "Create the admin weblogic server container"
       containers.podman.podman_container:
