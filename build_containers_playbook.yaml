@@ -24,13 +24,13 @@
         version: main
 
     - name: Build a autonomous database image
-      shell: "./tmp/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG"
+      shell: "./tmp/oracle/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG"
       environment:
         CUSTOM_IMAGE_TAG: "oracle/oad:{{ autonomous_database_tag }}"
       become: true
 
     - name: Build a weblogic server image
-      shell: "./tmp/oracle/weblogic-server/build.sh"
+      shell: "./tmp/oracle/oracle/weblogic-server/build.sh"
       environment:
         CUSTOM_IMAGE_TAG: "oracle/weblogic:{{ weblogic_server_tag }}"
       become: true
