@@ -1,0 +1,28 @@
+---
+- hosts: all
+  vars:
+    - container_registry: ""
+    - container_registry_username: ""
+    - autonmous_database_tag: ""
+    - weblogic_server_tag: ""
+  tasks:
+    - name: Login to  and create ${XDG_RUNTIME_DIR}/containers/auth.json
+      containers.podman.podman_login:
+        username: user
+        password: 'p4ssw0rd'
+        registry: quay.io
+    - name: Clone a repo with separate git directory
+      ansible.builtin.git:
+        repo: https://github.com/qupwork/oracle
+        dest: /tmp
+
+    - name: Build a autonomous database image
+      shell: "./tmp/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG"
+      environment:
+        CUSTOM_IMAGE_TAG: oracle/oad:{{ autonomous_database_tag }}
+      script: /tmp/oracle/autonomous-database/build.sh {{ autonmous_database_tag }}
+
+    - name: Build a weblogic server image
+      shell: "./tmp/oracle/weblogic-server/build.sh"
+      environment:
+        CUSTOM_IMAGE_TAG: oracle/weblogic:{{ weblogic_server_tag }}

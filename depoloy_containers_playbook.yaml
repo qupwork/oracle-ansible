@@ -1,0 +1,71 @@
+---
+- hosts: all
+  vars:
+    - container_registry: sammy
+    - autonmous_database_tag: /home/sammy
+  tasks:
+    - name: Create a oadb volume
+      containers.podman.podman_volume:
+        state: present
+        name: oadb_volume
+        label:
+          owner: autonomous-database
+        options:
+          - "type=ext4"
+
+    - name: "Create the autonomous database container"
+      containers.podman.podman_container:
+        name: oadb
+        hostname: oadb
+        image: "{{ container_registry }}oracle/oad:{{ autonmous_database_tag }}"
+        publish: 1521:1522 | 1522:1522 | 8443:8443 | 27017:27017
+        env:
+          - WORKLOAD_TYPE=ATP
+          - WALLET_PASSWORD={{ autonmous_database_wallet_password }}
+          - ADMIN_PASSWORD={{ autonmous_admin_password }}
+        cap_add:
+          - SYS_ADMIN
+        device:
+          - /dev/fuse
+        volume:
+          - "oadb_volume:/u01/data"
+        state: started
+        generate_systemd:
+          names: true
+          restart_policy: on_failure
+
+    - name: Template a security properties
+      ansible.builtin.template:
+        src: /resources/weblogic/security.properties
+        dest: /tmp/security.properties
+        owner: bin
+        group: wheel
+        mode: '0644'
+
+    - name: "Create the admin weblogic server container"
+      containers.podman.podman_container:
+        name: weblogic-admin
+        hostname: weblogic-admin
+        image: "{{ container_registry }}oracle/weblogic:{{ weblogic_server_tag }}"
+        publish: 7001:7001
+        volume:
+          - "/tmp/security.properties:/u01/oracle/properties"
+        state: started
+        generate_systemd:
+          names: true
+          restart_policy: on_failure
+
+    - name: "Create the managed weblogic server container"
+      containers.podman.podman_container:
+        name: weblogic-managed
+        hostname: weblogic-managed
+        image: "{{ container_registry }}oracle/weblogic:{{ weblogic_server_tag }}"
+        publish: 8001:8001
+        cmd_args:
+          - startManagedServer.sh
+        env:
+          - MANAGED_SERV_NAME=managed-server-1
+        state: started
+        generate_systemd:
+          names: true
+          restart_policy: on_failure
