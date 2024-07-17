@@ -27,7 +27,6 @@
     - name: Build a autonomous database image
       ansible.builtin.shell: |
         export CUSTOM_IMAGE_TAG="oracle/oad:{{ autonomous_database_tag }}"
-        cat /tmp/oracle/autonomous-database/build.sh
         chmod +x /tmp/oracle/autonomous-database/build.sh
         /tmp/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG
       args:
@@ -37,7 +36,6 @@
     - name: Build a weblogic server image
       ansible.builtin.shell: |
         export CUSTOM_IMAGE_TAG="oracle/weblogic:{{ weblogic_server_tag }}"
-        cat /tmp/oracle/weblogic-server/build.sh
         chmod +x /tmp/oracle/weblogic-server/build.sh
         /tmp/oracle/weblogic-server/build.sh
       args:
