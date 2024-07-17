@@ -78,8 +78,8 @@
 
     - name: "Create the admin weblogic server container"
       containers.podman.podman_container:
-        name: weblogic-managed
-        hostname: weblogic-managed
+        name: managed-server-1
+        hostname: managed-server-1
         image: "{{ container_registry }}oracle/weblogic:{{ weblogic_server_tag }}"
         publish:
           - 8001:8001
