@@ -45,7 +45,7 @@
         state: started
         generate_systemd:
           names: true
-          restart_policy: on-failure
+          restart_policy: always
       become: true
 
     - name: Creating a file with content
@@ -64,7 +64,7 @@
         state: started
         generate_systemd:
           names: true
-          restart_policy: on-failure
+          restart_policy: always
       become: true
 
     - name: "Create the managed weblogic server container"
