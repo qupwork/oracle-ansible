@@ -87,7 +87,7 @@
           - "/tmp/properties:/u01/oracle/properties:Z"
         state: started
         recreate: true
-        cmd_args: "startManagedServer.sh"
+        command: "startManagedServer.sh"
         generate_systemd:
           names: true
           restart_policy: always
