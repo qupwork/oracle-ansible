@@ -38,6 +38,7 @@
         generate_systemd:
           names: true
           restart_policy: on_failure
+      become: true
 
     - name: Template a security properties
       ansible.builtin.template:
@@ -74,3 +75,4 @@
         generate_systemd:
           names: true
           restart_policy: on_failure
+      become: true
