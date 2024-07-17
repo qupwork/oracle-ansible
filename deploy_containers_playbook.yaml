@@ -22,7 +22,7 @@
       containers.podman.podman_container:
         name: oadb
         hostname: oadb
-        image: "{{ container_registry }}oracle/oad:{{ autonmous_database_tag }}"
+        image: "{{ container_registry }}oracle/oad:{{ autonomous_database_tag }}"
         publish: 1521:1522 | 1522:1522 | 8443:8443 | 27017:27017
         env:
           - WORKLOAD_TYPE=ATP
