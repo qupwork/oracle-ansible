@@ -20,7 +20,8 @@
     - name: Clone a repo with separate git directory
       ansible.builtin.git:
         repo: https://github.com/qupwork/oracle
-        dest: /tmp/
+        dest: /tmp/oracle
+        version: main
 
     - name: Build a autonomous database image
       shell: "./tmp/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG"
