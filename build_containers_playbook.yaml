@@ -7,11 +7,11 @@
     - autonmous_database_tag: ""
     - weblogic_server_tag: ""
   tasks:
-    - name: Login to  and create ${XDG_RUNTIME_DIR}/containers/auth.json
+    - name: Login to  and create containers/auth.json
       containers.podman.podman_login:
-        username: {{ container_registry_username }}
-        password: {{ container_registry_password }}
-        registry: {{ container_registry }}
+        username: "{{ container_registry_username }}"
+        password: "{{ container_registry_password }}"
+        registry: "{{ container_registry }}"
 
     - name: Clone a repo with separate git directory
       ansible.builtin.git:
@@ -21,10 +21,10 @@
     - name: Build a autonomous database image
       shell: "./tmp/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG"
       environment:
-        CUSTOM_IMAGE_TAG: oracle/oad:{{ autonomous_database_tag }}
-      script: /tmp/oracle/autonomous-database/build.sh {{ autonmous_database_tag }}
+        CUSTOM_IMAGE_TAG: "oracle/oad:{{ autonomous_database_tag }}"
+      script: "/tmp/oracle/autonomous-database/build.sh {{ autonmous_database_tag }}"
 
     - name: Build a weblogic server image
       shell: "./tmp/oracle/weblogic-server/build.sh"
       environment:
-        CUSTOM_IMAGE_TAG: oracle/weblogic:{{ weblogic_server_tag }}
+        CUSTOM_IMAGE_TAG: "oracle/weblogic:{{ weblogic_server_tag }}"
