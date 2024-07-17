@@ -41,7 +41,7 @@
         state: started
         generate_systemd:
           names: true
-          restart_policy: on_failure
+          restart_policy: on-failure
       become: true
 
     - name: Template a security properties
@@ -63,7 +63,8 @@
         state: started
         generate_systemd:
           names: true
-          restart_policy: on_failure
+          restart_policy: on-failure
+      become: true
 
     - name: "Create the managed weblogic server container"
       containers.podman.podman_container:
@@ -78,5 +79,5 @@
         state: started
         generate_systemd:
           names: true
-          restart_policy: on_failure
+          restart_policy: on-failure
       become: true
