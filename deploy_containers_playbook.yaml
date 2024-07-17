@@ -51,7 +51,11 @@
     - name: Creating a file with content
       copy:
         dest: "/tmp/security.properties"
-        content: |
+
+    - name: Creating a file with content
+      ansible.builtin.blockinfile:
+        path: /tmp/security.properties
+        block: |
           {{ security_properties }}
 
     - name: "Create the admin weblogic server container"
