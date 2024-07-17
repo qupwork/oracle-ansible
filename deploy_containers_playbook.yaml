@@ -1,7 +1,7 @@
 ---
 - hosts: all
   vars:
-    - container_registry: "container-registry.oracle.com"
+    - container_registry: "localhost/"
     - autonomous_database_tag: ""
     - weblogic_server_tag: ""
     - autonomous_database_wallet_password: "123456789"
