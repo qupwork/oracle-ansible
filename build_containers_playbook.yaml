@@ -22,7 +22,6 @@
       shell: "./tmp/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG"
       environment:
         CUSTOM_IMAGE_TAG: "oracle/oad:{{ autonomous_database_tag }}"
-      script: "/tmp/oracle/autonomous-database/build.sh {{ autonmous_database_tag }}"
 
     - name: Build a weblogic server image
       shell: "./tmp/oracle/weblogic-server/build.sh"
