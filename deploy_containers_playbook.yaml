@@ -46,7 +46,7 @@
 
     - name: Copy security properties to remote
       ansible.builtin.copy:
-        src: ./resources/weblogic/security.properties
+        src: resources/weblogic/security.properties
         dest: /tmp/security.properties.template
         remote_src: yes
 
