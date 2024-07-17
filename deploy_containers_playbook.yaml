@@ -9,9 +9,9 @@
     - weblogic_username: "hello"
     - weblogic_password: "123456789"
     - security_properties: >-
-        username={{ weblogic_username }}
-        password={{ weblogic_password }}
-        JAVA_OPTIONS=-Dweblogic.StdoutDebugEnabled=true
+        username={{ weblogic_username }}\n
+        password={{ weblogic_password }}\n
+        JAVA_OPTIONS=-Dweblogic.StdoutDebugEnabled=true\n
   tasks:
     - name: Create a oadb volume
       containers.podman.podman_volume:
