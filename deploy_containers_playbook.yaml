@@ -25,9 +25,9 @@
         image: "{{ container_registry }}oracle/oad:{{ autonomous_database_tag }}"
         publish: 1521:1522 | 1522:1522 | 8443:8443 | 27017:27017
         env:
-          - WORKLOAD_TYPE=ATP
-          - WALLET_PASSWORD={{ autonomous_database_wallet_password }}
-          - ADMIN_PASSWORD={{ autonomous_admin_password }}
+          WORKLOAD_TYPE: ATP
+          WALLET_PASSWORD: "{{ autonomous_database_wallet_password }}"
+          ADMIN_PASSWORD: "{{ autonomous_admin_password }}"
         cap_add:
           - SYS_ADMIN
         device:
@@ -69,7 +69,7 @@
         cmd_args:
           - startManagedServer.sh
         env:
-          - MANAGED_SERV_NAME=managed-server-1
+          MANAGED_SERV_NAME: managed-server-1
         state: started
         generate_systemd:
           names: true
