@@ -15,6 +15,7 @@
         username: "{{ container_registry_username }}"
         password: "{{ container_registry_password }}"
         registry: "{{ container_registry }}"
+      become: true
 
     - name: Clone a repo with separate git directory
       ansible.builtin.git:
@@ -25,8 +26,10 @@
       shell: "./tmp/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG"
       environment:
         CUSTOM_IMAGE_TAG: "oracle/oad:{{ autonomous_database_tag }}"
+      become: true
 
     - name: Build a weblogic server image
       shell: "./tmp/oracle/weblogic-server/build.sh"
       environment:
         CUSTOM_IMAGE_TAG: "oracle/weblogic:{{ weblogic_server_tag }}"
+      become: true
