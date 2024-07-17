@@ -43,7 +43,7 @@
         volume:
           - "oadb_volume:/u01/data"
         state: started
-        recreate: false
+        recreate: true
         generate_systemd:
           names: true
           restart_policy: always
@@ -70,7 +70,7 @@
         volume:
           - "/tmp/properties:/u01/oracle/properties:Z"
         state: started
-        recreate: false
+        recreate: true
         generate_systemd:
           names: true
           restart_policy: always
