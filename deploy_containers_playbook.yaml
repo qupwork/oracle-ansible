@@ -4,8 +4,8 @@
     - container_registry: "localhost/"
     - autonomous_database_tag: ""
     - weblogic_server_tag: ""
-    - autonomous_database_wallet_password: "123456789"
-    - autonomous_admin_password: "123456789"
+    - autonomous_database_wallet_password: "123456789aA123"
+    - autonomous_admin_password: "123456789aA123"
     - weblogic_username: "hello"
     - weblogic_password: "123456789"
     - security_properties: |-
