@@ -24,13 +24,17 @@
         version: main
 
     - name: Build a autonomous database image
-      shell: "ls /tmp/oracle/autonomous-database && ./tmp/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG"
-      environment:
-        CUSTOM_IMAGE_TAG: "oracle/oad:{{ autonomous_database_tag }}"
+      ansible.builtin.shell: |
+        export CUSTOM_IMAGE_TAG="oracle/oad:{{ autonomous_database_tag }}"
+        ./tmp/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG
+      args:
+        executable: /bin/bash
       become: true
 
     - name: Build a weblogic server image
-      shell: "./tmp/oracle/oracle/weblogic-server/build.sh"
-      environment:
-        CUSTOM_IMAGE_TAG: "oracle/weblogic:{{ weblogic_server_tag }}"
+      ansible.builtin.shell: |
+        export CUSTOM_IMAGE_TAG="oracle/weblogic:{{ weblogic_server_tag }}"
+        ./tmp/oracle/oracle/weblogic-server/build.sh
+      args:
+        executable: /bin/bash
       become: true
