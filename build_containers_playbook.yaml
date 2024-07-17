@@ -24,7 +24,7 @@
         version: main
 
     - name: Build a autonomous database image
-      shell: "./tmp/oracle/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG"
+      shell: "ls /tmp && ls /tmp/oracle && ./tmp/oracle/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG"
       environment:
         CUSTOM_IMAGE_TAG: "oracle/oad:{{ autonomous_database_tag }}"
       become: true
