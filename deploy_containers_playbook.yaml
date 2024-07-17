@@ -51,6 +51,7 @@
     - name: Creating a file with content
       copy:
         dest: "/tmp/security.properties"
+        content: ""
 
     - name: Creating a file with content
       ansible.builtin.blockinfile:
