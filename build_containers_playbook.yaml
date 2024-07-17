@@ -22,6 +22,7 @@
         repo: https://github.com/qupwork/oracle
         dest: /tmp/oracle
         version: main
+        force: yes
 
     - name: Build a autonomous database image
       ansible.builtin.shell: |
