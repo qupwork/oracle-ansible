@@ -3,9 +3,12 @@
   vars:
     - container_registry: "container-registry.oracle.com"
     - container_registry_username: ""
-    - container_registry_password: ""
-    - autonmous_database_tag: ""
+#    - container_registry_password: ""
+    - autonomous_database_tag: ""
     - weblogic_server_tag: ""
+  vars_prompt:
+    - name: container_registry_password
+      prompt: Enter the registry password
   tasks:
     - name: Login to  and create containers/auth.json
       containers.podman.podman_login:
