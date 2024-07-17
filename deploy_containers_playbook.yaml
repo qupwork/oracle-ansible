@@ -48,7 +48,7 @@
     - name: Template a security properties
       ansible.builtin.template:
         src: "{{ security_properties_path }}"
-        dest: /tmp/security.properties
+        dest: /tmp
         owner: bin
         group: wheel
         mode: '0644'
