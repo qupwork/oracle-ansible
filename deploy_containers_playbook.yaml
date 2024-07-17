@@ -42,7 +42,7 @@
           - /dev/fuse
         volume:
           - "oadb_volume:/u01/data"
-        state: running
+        state: started
         recreate: true
         generate_systemd:
           names: true
@@ -62,7 +62,7 @@
         publish: 7001:7001
         volume:
           - "/tmp/security.properties:/u01/oracle/properties/security.properties"
-        state: running
+        state: started
         recreate: true
         generate_systemd:
           names: true
@@ -81,7 +81,7 @@
           - startManagedServer.sh
         env:
           MANAGED_SERV_NAME: managed-server-1
-        state: running
+        state: started
         recreate: true
         generate_systemd:
           names: true
