@@ -65,7 +65,8 @@
         name: weblogic-admin
         hostname: weblogic-admin
         image: "{{ container_registry }}oracle/weblogic:{{ weblogic_server_tag }}"
-        publish: 7001:7001
+        publish:
+        - 7001:7001
         volume:
           - "/tmp/properties:/u01/oracle/properties"
         state: started
@@ -80,11 +81,12 @@
         name: weblogic-managed
         hostname: weblogic-managed
         image: "{{ container_registry }}oracle/weblogic:{{ weblogic_server_tag }}"
-        publish: 8001:8001
+        publish:
+        - 8001:8001
         volume:
           - "/tmp/properties:/u01/oracle/properties"
         cmd_args:
-          - startManagedServer.sh
+          - "startManagedServer.sh"
         env:
           MANAGED_SERV_NAME: "managed-server-1"
         state: started
