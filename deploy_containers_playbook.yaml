@@ -44,9 +44,14 @@
           restart_policy: on-failure
       become: true
 
+    - name: Copy security properties to remote
+      ansible.builtin.copy:
+        src: resources/weblogic/security.properties
+        dest: /tmp/security.properties.template
+
     - name: Template a security properties
       ansible.builtin.template:
-        src: /resources/weblogic/security.properties
+        src: /tmp/security.properties.template
         dest: /tmp/security.properties
         owner: bin
         group: wheel
