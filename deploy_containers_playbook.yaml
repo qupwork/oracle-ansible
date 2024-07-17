@@ -8,7 +8,10 @@
     - autonomous_admin_password: "123456789"
     - weblogic_username: "hello"
     - weblogic_password: "123456789"
-    - security_properties_path: ""
+    - security_properties: |
+        username={{ weblogic_username }}
+        password={{ weblogic_password }}
+        JAVA_OPTIONS=-Dweblogic.StdoutDebugEnabled=true
   tasks:
     - name: Create a oadb volume
       containers.podman.podman_volume:
@@ -45,13 +48,13 @@
           restart_policy: on-failure
       become: true
 
-    - name: Template a security properties
-      ansible.builtin.template:
-        src: "{{ security_properties_path }}"
-        dest: /tmp
-        owner: bin
-        group: wheel
-        mode: '0644'
+    - hosts: all
+      tasks:
+        - name: Creating a file with content
+          copy:
+            dest: "/tmp/security.properties"
+            content: |
+              {{ security_properties }}
 
     - name: "Create the admin weblogic server container"
       containers.podman.podman_container:
