@@ -1,16 +1,18 @@
 ---
 - hosts: all
   vars:
-    - container_registry: ""
+    - container_registry: "container-registry.oracle.com"
     - container_registry_username: ""
+    - container_registry_password: ""
     - autonmous_database_tag: ""
     - weblogic_server_tag: ""
   tasks:
     - name: Login to  and create ${XDG_RUNTIME_DIR}/containers/auth.json
       containers.podman.podman_login:
-        username: user
-        password: 'p4ssw0rd'
-        registry: quay.io
+        username: {{ container_registry_username }}
+        password: {{ container_registry_password }}
+        registry: {{ container_registry }}
+
     - name: Clone a repo with separate git directory
       ansible.builtin.git:
         repo: https://github.com/qupwork/oracle
