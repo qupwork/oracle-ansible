@@ -1,8 +1,13 @@
 ---
 - hosts: all
   vars:
-    - container_registry: sammy
-    - autonmous_database_tag: /home/sammy
+    - container_registry: "container-registry.oracle.com"
+    - autonomous_database_tag: ""
+    - weblogic_server_tag: ""
+    - autonomous_database_wallet_password: "123456789"
+    - autonomous_admin_password: "123456789"
+    - weblogic_username: "hello"
+    - weblogic_password: "123456789"
   tasks:
     - name: Create a oadb volume
       containers.podman.podman_volume:
@@ -21,8 +26,8 @@
         publish: 1521:1522 | 1522:1522 | 8443:8443 | 27017:27017
         env:
           - WORKLOAD_TYPE=ATP
-          - WALLET_PASSWORD={{ autonmous_database_wallet_password }}
-          - ADMIN_PASSWORD={{ autonmous_admin_password }}
+          - WALLET_PASSWORD={{ autonomous_database_wallet_password }}
+          - ADMIN_PASSWORD={{ autonomous_admin_password }}
         cap_add:
           - SYS_ADMIN
         device:
