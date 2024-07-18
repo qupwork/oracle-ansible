@@ -77,20 +77,6 @@
         recreate: true
       become: true
 
-    - name: Generate systemd unit file for oad
-      containers.podman.podman_generate_systemd:
-        name: oad
-        new: true
-        no_header: true
-        dest: /etc/systemd/system
-
-    - name: Ensure postgres container is started and enabled
-      ansible.builtin.systemd:
-        name: container-oad
-        daemon_reload: true
-        state: started
-        enabled: true
-
     - name: "Create the managed weblogic server container"
       containers.podman.podman_container:
         name: managed-server-1
@@ -116,3 +102,17 @@
             [Install]
             WantedBy=default.target
       become: true
+
+    - name: Generate systemd unit file for oadb
+      containers.podman.podman_generate_systemd:
+        name: oadb
+        new: true
+        no_header: true
+        dest: /etc/systemd/system
+
+    - name: Ensure postgres container is started and enabled
+      ansible.builtin.systemd:
+        name: container-oadb
+        daemon_reload: true
+        state: started
+        enabled: true
