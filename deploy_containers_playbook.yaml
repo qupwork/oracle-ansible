@@ -43,6 +43,8 @@
         volume:
           - "oadb_volume:/u01/data"
         state: started
+        network_aliases:
+          - "oad"
         recreate: true
         generate_systemd:
           names: true
@@ -65,6 +67,8 @@
         name: weblogic-admin
         hostname: weblogic-admin
         image: "{{ container_registry }}oracle/weblogic:{{ weblogic_server_tag }}"
+        network_aliases:
+          - "weblogic-admin"
         publish:
         - 7001:7001
         volume:
@@ -88,6 +92,8 @@
         state: started
         recreate: true
         command: "startManagedServer.sh"
+        network_aliases:
+          - "managed-server-1"
         generate_systemd:
           names: true
           restart_policy: always
