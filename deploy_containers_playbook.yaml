@@ -20,10 +20,6 @@
         label:
           owner: autonomous-database
 
-    - name: Create a podman network
-      containers.podman.podman_network:
-        name: oracle_network
-
     - name: "Create the autonomous database container"
       containers.podman.podman_container:
         name: oadb
