@@ -1,0 +1,35 @@
+---
+- hosts: all
+  vars:
+    - container_registry: "localhost/"
+    - autonomous_database_tag: ""
+    - weblogic_server_tag: ""
+    - autonomous_database_wallet_password: "123456789aA123"
+    - autonomous_admin_password: "123456789aA123"
+    - weblogic_username: "hello"
+    - weblogic_password: "123456789"
+    - security_properties: |-
+        username={{ weblogic_username }}
+        password={{ weblogic_password }}
+        JAVA_OPTIONS=-Dweblogic.StdoutDebugEnabled=true
+  tasks:
+    - name: "Create the autonomous database container"
+      containers.podman.podman_container:
+        name: oadb
+        hostname: oadb
+        state: deleted
+      become: true
+
+    - name: "Create the admin weblogic server container"
+      containers.podman.podman_container:
+        name: weblogic-admin
+        hostname: weblogic-admin
+        state: deleted
+      become: true
+
+    - name: "Create the managed weblogic server container"
+      containers.podman.podman_container:
+        name: managed-server-1
+        hostname: managed-server-1
+        state: deleted
+      become: true

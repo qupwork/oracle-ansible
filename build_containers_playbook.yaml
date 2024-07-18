@@ -46,12 +46,8 @@
         export WEBLOGIC_PASSWORD={{ weblogic_password }}
         export PROPERTIES_PATH=/tmp/oracle/weblogic-server/properties/docker-build/domain_security.properties
         
-        printenv > /tmp/printenv
-
         envsubst < $PROPERTIES_PATH | tee $PROPERTIES_PATH
-        
-        cat $PROPERTIES_PATH > /tmp/ppath
-        
+                
         chmod +x /tmp/oracle/weblogic-server/build.sh
         /tmp/oracle/weblogic-server/build.sh
       args:
