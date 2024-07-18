@@ -17,6 +17,11 @@
         registry: "{{ container_registry }}"
       become: true
 
+    - name: Recursively remove directory
+      ansible.builtin.file:
+        path: /tmp/oracle
+        state: absent
+
     - name: Clone a repo with separate git directory
       ansible.builtin.git:
         repo: https://github.com/qupwork/oracle

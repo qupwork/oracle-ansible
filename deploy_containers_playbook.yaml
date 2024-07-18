@@ -80,7 +80,7 @@
           restart_policy: always
       become: true
 
-    - name: "Create the admin weblogic server container"
+    - name: "Create the managed weblogic server container"
       containers.podman.podman_container:
         name: managed-server-1
         hostname: managed-server-1
