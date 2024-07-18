@@ -68,7 +68,7 @@
         hostname: weblogic-admin
         image: "{{ container_registry }}oracle/weblogic:{{ weblogic_server_tag }}"
         network_aliases:
-          - "weblogic-admin"
+          - "wlsadmin"
         publish:
         - 7001:7001
         volume:
