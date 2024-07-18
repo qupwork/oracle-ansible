@@ -20,6 +20,11 @@
         label:
           owner: autonomous-database
 
+    - name: Create a podman network
+      containers.podman.podman_network:
+        name: oracle_network
+      become: true
+
     - name: "Create the autonomous database container"
       containers.podman.podman_container:
         name: oadb
@@ -41,6 +46,7 @@
         volume:
           - "oadb_volume:/u01/data"
         state: started
+        network: "oracle_network"
         network_aliases:
           - "oad"
         recreate: true
@@ -65,6 +71,7 @@
         name: weblogic-admin
         hostname: weblogic-admin
         image: "{{ container_registry }}oracle/weblogic:{{ weblogic_server_tag }}"
+        network: "oracle_network"
         network_aliases:
           - "wlsadmin"
         publish:
@@ -90,6 +97,7 @@
         state: started
         recreate: true
         command: "startManagedServer.sh"
+        network: "oracle_network"
         network_aliases:
           - "managed-server-1"
         generate_systemd:
