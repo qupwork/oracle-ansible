@@ -15,8 +15,8 @@
   tasks:
     - name: Clean up running containers
       ansible.builtin.shell: |
-        podman stop $(podman ps -q)
-        podman rm $(podman ps -aq)
+        podman stop $(podman ps -q) || echo
+        podman rm $(podman ps -aq) || echo
       become: true
 
 
