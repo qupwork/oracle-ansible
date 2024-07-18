@@ -45,7 +45,7 @@
         state: started
         network_aliases:
           - "oad"
-        recreate: false
+        recreate: true
         generate_systemd:
           names: true
           restart_policy: always
