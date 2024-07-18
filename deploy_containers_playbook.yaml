@@ -19,8 +19,6 @@
         name: oadb_volume
         label:
           owner: autonomous-database
-        options:
-          - "type=ext4"
 
     - name: "Create the autonomous database container"
       containers.podman.podman_container:
