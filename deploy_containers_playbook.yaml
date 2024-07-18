@@ -110,7 +110,7 @@
         no_header: true
         dest: /etc/systemd/system
 
-    - name: Ensure postgres container is started and enabled
+    - name: Ensure oadb container is started and enabled
       ansible.builtin.systemd:
         name: container-oadb
         daemon_reload: true
