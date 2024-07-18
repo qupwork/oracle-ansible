@@ -103,16 +103,30 @@
             WantedBy=default.target
       become: true
 
-    - name: Generate systemd unit file for oadb
+    - name: Generate systemd unit file for weblogic-admin
       containers.podman.podman_generate_systemd:
-        name: oadb
+        name: weblogic-admin
         new: true
         no_header: true
         dest: /etc/systemd/system
 
-    - name: Ensure oadb container is started and enabled
+    - name: Ensure weblogic-admin container is started and enabled
       ansible.builtin.systemd:
-        name: container-oadb
+        name: weblogic-admin
+        daemon_reload: true
+        state: started
+        enabled: true
+
+    - name: Generate systemd unit file for managed-server-1
+      containers.podman.podman_generate_systemd:
+        name: managed-server-1
+        new: true
+        no_header: true
+        dest: /etc/systemd/system
+
+    - name: Ensure managed-server-1 container is started and enabled
+      ansible.builtin.systemd:
+        name: container-managed-server-1
         daemon_reload: true
         state: started
         enabled: true
