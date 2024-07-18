@@ -13,23 +13,10 @@
         password={{ weblogic_password }}
         JAVA_OPTIONS=-Dweblogic.StdoutDebugEnabled=true
   tasks:
-    - name: "Create the autonomous database container"
-      containers.podman.podman_container:
-        name: oadb
-        hostname: oadb
-        state: stopped
+    - name: Clean up running containers
+      ansible.builtin.shell: |
+        podman stop $(podman ps -q)
+        podman rm $(podman ps -aq)
       become: true
 
-    - name: "Create the admin weblogic server container"
-      containers.podman.podman_container:
-        name: weblogic-admin
-        hostname: weblogic-admin
-        state: stopped
-      become: true
 
-    - name: "Create the managed weblogic server container"
-      containers.podman.podman_container:
-        name: managed-server-1
-        hostname: managed-server-1
-        state: stopped
-      become: true
