@@ -82,6 +82,8 @@
         name: managed-server-1
         hostname: managed-server-1
         image: "{{ container_registry }}oracle/weblogic:{{ weblogic_server_tag }}"
+        env:
+          MANAGED_SERV_NAME: "managed-server-1"
         publish:
           - 8001:8001
         volume:
