@@ -114,21 +114,21 @@
 
     - name: Ensure weblogic-admin container is started and enabled
       ansible.builtin.systemd:
-        name: weblogic-admin
+        name: container-weblogic-admin
         daemon_reload: true
         state: started
         enabled: true
 
     - name: Generate systemd unit file for managed-server-1
       containers.podman.podman_generate_systemd:
-        name: managed-server-1
+        name: managed-server1
         new: true
         no_header: true
         dest: /etc/systemd/system
 
     - name: Ensure managed-server-1 container is started and enabled
       ansible.builtin.systemd:
-        name: container-managed-server-1
+        name: container-managed-server1
         daemon_reload: true
         state: started
         enabled: true
