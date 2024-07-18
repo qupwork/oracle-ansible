@@ -17,19 +17,19 @@
       containers.podman.podman_container:
         name: oadb
         hostname: oadb
-        state: deleted
+        state: stopped
       become: true
 
     - name: "Create the admin weblogic server container"
       containers.podman.podman_container:
         name: weblogic-admin
         hostname: weblogic-admin
-        state: deleted
+        state: stopped
       become: true
 
     - name: "Create the managed weblogic server container"
       containers.podman.podman_container:
         name: managed-server-1
         hostname: managed-server-1
-        state: deleted
+        state: stopped
       become: true
