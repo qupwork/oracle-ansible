@@ -1,9 +1,12 @@
 ---
 - hosts: all
   vars:
-    - container_registry: "localhost/"
-    - autonomous_database_tag: ""
-    - weblogic_server_tag: ""
+    - container_registry: "container-registry.oracle.com"
+    - container_registry_username: "adnn.selimovic@gmail.com"
+    - container_registry_password: "VbS_esFlXm_pV3uid2Z"
+    - container_registry_local: "localhost/"
+    - autonomous_database_tag: "v0.0.1"
+    - weblogic_server_tag: "v0.0.1"
     - autonomous_database_wallet_password: "123456789aA123"
     - autonomous_admin_password: "123456789aA123"
     - weblogic_username: "hello"
@@ -13,6 +16,51 @@
         password={{ weblogic_password }}
         JAVA_OPTIONS=-Dweblogic.StdoutDebugEnabled=true
   tasks:
+    - name: Login to  and create containers/auth.json
+      containers.podman.podman_login:
+        username: "{{ container_registry_username }}"
+        password: "{{ container_registry_password }}"
+        registry: "{{ container_registry }}"
+      become: true
+
+    - name: Recursively remove directory
+      ansible.builtin.file:
+        path: /tmp/oracle
+        state: absent
+      become: true
+
+    - name: Clone a repo with separate git directory
+      ansible.builtin.git:
+        repo: https://github.com/oracleweboadb/oracle
+        dest: /tmp/oracle
+        version: main
+        force: yes
+
+    - name: Build a autonomous database image
+      ansible.builtin.shell: |
+        export CUSTOM_IMAGE_TAG="oracle/oad:{{ autonomous_database_tag }}"
+
+        chmod +x /tmp/oracle/autonomous-database/build.sh
+        /tmp/oracle/autonomous-database/build.sh $CUSTOM_IMAGE_TAG
+      args:
+        executable: /bin/bash
+      become: true
+
+    - name: Build a weblogic server image
+      ansible.builtin.shell: |
+        export CUSTOM_IMAGE_TAG="oracle/weblogic:{{ weblogic_server_tag }}"
+        export WEBLOGIC_USERNAME={{ weblogic_username }}
+        export WEBLOGIC_PASSWORD={{ weblogic_password }}
+        export PROPERTIES_PATH=/tmp/oracle/weblogic-server/properties/docker-build/domain_security.properties
+
+        envsubst < $PROPERTIES_PATH | tee $PROPERTIES_PATH
+
+        chmod +x /tmp/oracle/weblogic-server/build.sh
+        /tmp/oracle/weblogic-server/build.sh
+      args:
+        executable: /bin/bash
+      become: true
+
     - name: Create a oadb volume
       containers.podman.podman_volume:
         state: present
@@ -24,12 +72,12 @@
       containers.podman.podman_container:
         name: oadb
         hostname: oadb
-        image: "{{ container_registry }}oracle/oad:{{ autonomous_database_tag }}"
+        image: "{{ container_registry_local }}oracle/oad:{{ autonomous_database_tag }}"
         publish:
-        - 1521:1522
-        - 1522:1522
-        - 8443:8443
-        - 27017:27017
+          - 1521:1522
+          - 1522:1522
+          - 8443:8443
+          - 27017:27017
         env:
           WORKLOAD_TYPE: ATP
           WALLET_PASSWORD: "{{ autonomous_database_wallet_password }}"
@@ -43,7 +91,7 @@
         state: started
         network: "oracle_network"
         network_aliases:
-          - "oad"
+          - "oadb"
         recreate: true
         generate_systemd:
           names: true
@@ -65,12 +113,12 @@
       containers.podman.podman_container:
         name: weblogic-admin
         hostname: weblogic-admin
-        image: "{{ container_registry }}oracle/weblogic:{{ weblogic_server_tag }}"
+        image: "{{ container_registry_local }}oracle/weblogic:{{ weblogic_server_tag }}"
         network: "oracle_network"
         network_aliases:
           - "wlsadmin"
         publish:
-        - 7001:7001
+          - 7001:7001
         volume:
           - "/tmp/properties:/u01/oracle/properties:Z"
         state: started
@@ -81,7 +129,7 @@
       containers.podman.podman_container:
         name: managed-server1
         hostname: managed-server1
-        image: "{{ container_registry }}oracle/weblogic:{{ weblogic_server_tag }}"
+        image: "{{ container_registry_local }}oracle/weblogic:{{ weblogic_server_tag }}"
         env:
           MANAGED_SERV_NAME: "managed-server1"
         publish:
@@ -93,16 +141,26 @@
         command: "startManagedServer.sh"
         network: "oracle_network"
         network_aliases:
-          - "managed-server-1"
+          - "managed-server1"
         generate_systemd:
           names: true
           restart_policy: always
-        quadlet_options:
-          - "AutoUpdate=registry"
-          - "Pull=true"
-          - |
-            [Install]
-            WantedBy=default.target
+      become: true
+
+    - name: Generate systemd unit file for oadb
+      containers.podman.podman_generate_systemd:
+        name: oadb
+        new: true
+        no_header: true
+        dest: /etc/systemd/system
+      become: true
+
+    - name: Ensure postgres container is started and enabled
+      ansible.builtin.systemd:
+        name: container-oadb
+        daemon_reload: true
+        state: started
+        enabled: true
       become: true
 
     - name: Generate systemd unit file for weblogic-admin
@@ -111,6 +169,7 @@
         new: true
         no_header: true
         dest: /etc/systemd/system
+      become: true
 
     - name: Ensure weblogic-admin container is started and enabled
       ansible.builtin.systemd:
@@ -118,6 +177,7 @@
         daemon_reload: true
         state: started
         enabled: true
+      become: true
 
     - name: Generate systemd unit file for managed-server-1
       containers.podman.podman_generate_systemd:
@@ -125,6 +185,7 @@
         new: true
         no_header: true
         dest: /etc/systemd/system
+      become: true
 
     - name: Ensure managed-server-1 container is started and enabled
       ansible.builtin.systemd:
@@ -132,3 +193,4 @@
         daemon_reload: true
         state: started
         enabled: true
+      become: true
