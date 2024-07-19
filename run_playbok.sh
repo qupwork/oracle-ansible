@@ -2,7 +2,6 @@
 
 cd oracle-ansible
 git pull
-cd ..
 
 ansible-playbook -i ../inventory.yaml cleanup_containers_playbook.yaml --extra-vars "container_registry_username=adnn.selimovic@gmail.com autonomous_database_tag=v0.0.1 weblogic_server_tag=v0.0.1 weblogic_username=hello weblogic_password=123456789"
 
