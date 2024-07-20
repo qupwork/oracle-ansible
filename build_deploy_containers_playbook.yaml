@@ -93,6 +93,7 @@
         network_aliases:
           - "oadb"
         recreate: true
+        rm: true
         generate_systemd:
           names: true
           restart_policy: always
@@ -122,6 +123,7 @@
         volume:
           - "/tmp/properties:/u01/oracle/properties:Z"
         state: created
+        rm: true
         recreate: true
       become: true
 
@@ -140,6 +142,7 @@
         recreate: true
         command: "startManagedServer.sh"
         network: "oracle_network"
+        rm: true
         network_aliases:
           - "managed-server1"
         generate_systemd:
