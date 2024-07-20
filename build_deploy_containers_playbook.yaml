@@ -2,8 +2,8 @@
 - hosts: all
   vars:
     - container_registry: "container-registry.oracle.com"
-    - container_registry_username: "adnn.selimovic@gmail.com"
-    - container_registry_password: "VbS_esFlXm_pV3uid2Z"
+    - container_registry_username: ""
+    - container_registry_password: ""
     - container_registry_local: "localhost/"
     - autonomous_database_tag: "v0.0.1"
     - weblogic_server_tag: "v0.0.1"
