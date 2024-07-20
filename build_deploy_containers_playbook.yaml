@@ -88,7 +88,7 @@
           - /dev/fuse
         volume:
           - "oadb_volume:/u01/data"
-        state: started
+        state: created
         network: "oracle_network"
         network_aliases:
           - "oadb"
@@ -121,7 +121,7 @@
           - 7001:7001
         volume:
           - "/tmp/properties:/u01/oracle/properties:Z"
-        state: started
+        state: created
         recreate: true
       become: true
 
@@ -136,7 +136,7 @@
           - 8001:8001
         volume:
           - "/tmp/properties:/u01/oracle/properties:Z"
-        state: started
+        state: created
         recreate: true
         command: "startManagedServer.sh"
         network: "oracle_network"
